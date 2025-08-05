@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A DARK ZONE</title>
+    <script>
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName("script")[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      let player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player("player", {
+          events: {
+            onReady: function (event) {
+              event.target.playVideo();
+            },
+            onStateChange: function (event) {
+              if (event.data === YT.PlayerState.PLAYING) {
+                const cover = document.getElementById("cover");
+                cover.classList.add("hidden");
+              }
+              if (event.data === YT.PlayerState.ENDED) {
+                event.target.playVideo();
+              }
+            },
+            onAutoplayBlocked: function () {
+              const cover = document.getElementById("cover");
+              cover.classList.add("show_play");
+            },
+          },
+        });
+        const cover = document.getElementById("cover");
+        cover.addEventListener("click", () => {
+          player.playVideo();
+        });
+      }
+    </script>
+
+    <style>
+      body {
+        background-color: #000;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 0;
+      }
+
+      .dancing_jacks {
+        background-image: url("dancing_jack.gif");
+        background-size: 92px 104px;
+        background-repeat: repeat-x;
+        animation: slideleft 2s linear infinite forwards;
+        image-rendering: pixelated;
+      }
+
+      .top {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 104px;
+        background-color: #000;
+        transform: rotate(0.5turn);
+      }
+
+      .bottom {
+        position: fixed;
+        bottom: 0;
+        height: 104px;
+        left: 0;
+        right: 0;
+      }
+
+      .player-container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #cover {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 1);
+        transition: opacity 1.5s linear;
+      }
+
+      #cover.show_play {
+        background-image: url("play.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        cursor: pointer;
+      }
+
+      #cover.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .dancing_jacks {
+          animation: none;
+        }
+      }
+
+      @keyframes slideleft {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: -92px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dancing_jacks bottom"></div>
+    <div class="dancing_jacks top"></div>
+    <div class="player-container">
+      <iframe
+        id="player"
+        width="560"
+        height="315"
+        type="text/html"
+        src="https://www.youtube.com/embed/K-ifukvnICY?enablejsapi=1&controls=0&playsinline=1&loop=1"
+        title="A DARK ZONE"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      ></iframe>
+      <div id="cover"></div>
+    </div>
+  </body>
+</html>
