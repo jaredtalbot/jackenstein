@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
     <title>A DARK ZONE</title>
     <script>
       const tag = document.createElement("script");
@@ -35,6 +36,7 @@
         const cover = document.getElementById("cover");
         cover.addEventListener("click", () => {
           player.playVideo();
+          cover.classList.add("hidden");
         });
       }
     </script>
